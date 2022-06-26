@@ -118,7 +118,40 @@
       </div>
       <h2 class="mb-3"><%= profile.name %>'s games</h2>
       <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g5 px-1">
-        <%# This is where we'll loop over our games! %> 
+        <%# This is where we'll loop over our games! %>
+        <% games.forEach(game => { %>
+          <div class="col">
+            <div class="card bg-dark shadow-sm mb-3">
+              <% if (game.imageUrl) { %>
+                <img
+                  class="card-img-top"
+                  src="<%= game.imageUrl %>"
+                  alt="<%= game.name %>'s image"
+                  width="100%"
+                />
+              <% } else {%>
+                <img
+                  class="card-img-top"
+                  src="/images/icons/user.png"
+                  alt="A placeholder avatar"
+                  width="100%"
+                />
+              <% } %>
+              <div class="card-body">
+                <p class="card-title fs-4 text-light"><%= game.name %></p>
+                <p class="card-text fs-5 text-light">
+                  Released: <%= game?.released.toLocaleDateString() %>
+                </p>
+                <a 
+                  href="/games/<%= game.rawgId %>" 
+                  class="btn btn-primary"
+                >
+                  Details
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
       </div>
     </div>
   </section>
