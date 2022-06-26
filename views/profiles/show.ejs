@@ -68,7 +68,16 @@
       </a>
     <% } %>
     <%# This is where we'll add a button to 'friend/unfriend' a user %> 
-    
+    <% if (!profile._id.equals(userProfile._id) && !userProfile.friends?.includes(profile._id)) { %>
+      <form action="/profiles/<%= profile._id %>/friend?_method=PATCH" method="POST">
+        <button class="btn btn-primary" type="submit">Add Friend</button>
+      </form>
+    <% } %>  
+    <% if (!profile._id.equals(userProfile._id) && userProfile.friends?.includes(profile._id)) { %>
+      <form action="/profiles/<%= profile._id %>/unfriend?_method=PATCH" method="POST">
+        <button class="btn btn-primary" type="submit">Remove Friend</button>
+      </form>
+    <% } %>
   </section>
   <section class="bg-light pt-3">
     <div class="container">
