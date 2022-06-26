@@ -21,6 +21,7 @@ function show(req, res) {
   .then((response) => {
     Game.findOne({ rawgId: response.data.id })
     // This is where we'll populate collectedBy
+    .populate('collectedBy')
     // This is where we'll deep-populate reviews
     .then((game)=> {
       res.render("games/show", {
