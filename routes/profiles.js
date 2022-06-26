@@ -6,6 +6,7 @@ const router = Router()
 router.get('/', isLoggedIn, profilesCtrl.index)
 router.get('/:id', isLoggedIn, profilesCtrl.show)
 router.get('/:id/edit', isLoggedIn, profilesCtrl.edit)
+router.patch('/:id', isLoggedIn, profilesCtrl.update)
 
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
