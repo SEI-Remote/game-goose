@@ -20,7 +20,38 @@ function create(req, res) {
   })
 }
 
+function show(req, res) {
+  Message.findById(req.params.id)
+  .populate('author')
+  .populate({
+    path: 'replies',
+    populate: {
+      path: 'author'
+    }
+  })
+  .then((message)=> {
+    res.render('messages/show', {
+      title: 'Message Details',
+      message
+    })
+  })
+}
+
+function reply(req, res) {
+  Message.findById(req.params.id)
+  .then((message)=> {
+    req.body.author = req.user.profile._id
+    message.replies.push(req.body)
+    message.save()
+    .then(()=> {
+      res.redirect(`/messages/${req.params.id}`)
+    })
+  })
+}
+
 export { 
   index,
-  create
+  create,
+  show,
+  reply
 }
