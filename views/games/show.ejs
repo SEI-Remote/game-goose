@@ -1,0 +1,118 @@
+<%- include('../partials/html-head') %>
+<%- include('../partials/nav') %>
+
+
+<main>
+  <section class="bg-dark text-secondary px-4">
+    <h1 class="display-5 fw-bold text-white pt-2 text-center">
+      <%= apiResult.name %>
+    </h1>
+    <div class="container py-4">
+      <img 
+        width="100%" 
+        src="<%= apiResult.background_image %>" 
+        alt="<%= apiResult.name %>'s background image"
+      >
+      <div class="accordion" id="accordion">
+        <div class="accordion-item bg-dark">
+          <h2 class="accordion-header" id="headingOne">
+            <button 
+              class="accordion-button bg-dark text-light" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#collapseOne" 
+              aria-expanded="true" 
+              aria-controls="collapseOne"
+            >
+              Game Description
+            </button>
+          </h2>
+          <div 
+            id="collapseOne" 
+            class="accordion-collapse collapse" 
+            aria-labelledby="headingOne" 
+            data-bs-parent="#accordion"
+          >
+            <div class="accordion-body">
+              <p class="mt-4"><%= apiResult.description_raw %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="mt-4 fs-4 text-light">Released: <%= apiResult.released %></p>
+      <p class="mt-4 fs-4 text-light">
+        ESRB Rating: 
+        <%= apiResult.esrb_rating ? apiResult.esrb_rating.name : 'N/A' %>
+      </p>
+      <p class="mb-1 fs-4 text-light">Platforms:</p>
+      <ul>
+        <% apiResult.platforms.forEach(p => { %>
+          <li class="fs-5 text-light"><%= p.platform.name %></li>
+        <% }) %>
+      </ul>
+      <p class="mb-1 fs-4 text-light">Developers:</p>
+      <ul>
+        <% apiResult.developers.forEach(d => { %>
+          <li class="fs-5 text-light"><%= d.name %></li>
+        <% }) %>
+      </ul>
+      <p class="mb-1 fs-4 text-light">Genres:</p>
+      <ul>
+        <% apiResult.genres.forEach(g => { %>
+          <li class="fs-5 text-light"><%= g.name %></li>
+        <% }) %>
+      </ul>
+      <p class="fs-5 text-light">
+        Metacritic Score: 
+        <%= apiResult.metacritic ? apiResult.metacritic : 'N/A' %>
+      </p>
+      <%# This is where we'll list the profiles who have collected the game %> 
+    </div>
+    <%# This is where we'll display a button to add/remove the game from your collection %>
+    <% if (!userHasGame) { %>
+      <form 
+        class="text-center" 
+        action="/games/<%= apiResult.id %>/addToCollection?_method=PATCH" 
+        method="POST"
+      >
+        <input type="text" name="name" hidden value="<%= apiResult.name %>">
+        <input type="text" name="rawgId" hidden value="<%= apiResult.id %>">
+        <input 
+          type="text" 
+          name="imageUrl" 
+          hidden 
+          value="<%= apiResult.background_image %>"
+        >
+        <input 
+          type="text" 
+          name="released" 
+          hidden 
+          value="<%= apiResult.released %>"
+        >
+        <button class="btn btn-primary">
+          Add To Collection
+        </button> 
+      </form>
+    <% } %>
+    <% if (userHasGame) { %>
+      <form 
+        class="text-center" 
+        action="/games/<%= apiResult.id %>/removeFromCollection?_method=PATCH" 
+        method="POST"
+      >
+        <button class="btn btn-danger">
+          Remove From Collection
+        </button>
+      </form>
+    <% } %> 
+    
+    <div class="container">
+      <%# This is where we'll display a form to add a review once the game is added to your collection %> 
+      
+      <%# This is where we'll display all the reviews for a game %> 
+      
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
